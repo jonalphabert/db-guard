@@ -1,0 +1,63 @@
+# ========================
+# Go build artifacts
+# ========================
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+*.test
+*.out
+
+# Binary hasil build
+dbkeeper
+dbkeeper-*
+bin/
+dist/
+
+# ========================
+# Go coverage
+# ========================
+coverage.out
+coverage.html
+
+# ========================
+# IDE & Editor
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ========================
+# OS files
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# Logs
+# ========================
+*.log
+logs/
+
+# ========================
+# App specific
+# ========================
+.env
+.env.*
+config.yaml
+*.local.yaml
+
+# Backup artifacts (VERY IMPORTANT)
+backups/
+*.dump
+*.sql
+
+# ========================
+# Temporary
+# ========================
+tmp/
+temp/
