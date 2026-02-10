@@ -11,8 +11,8 @@
 *.out
 
 # Binary hasil build
-dbkeeper
-dbkeeper-*
+dbguard
+dbguard-*
 bin/
 dist/
 
