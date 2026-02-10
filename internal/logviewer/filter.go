@@ -20,10 +20,11 @@ func extractLevel(line string) string {
 func FilterByLevel(lines []string, level string) []string {
 	var result []string
 	levelPriority := map[string]int{
-		"DEBUG": 1,
-		"INFO":  2,
-		"WARN":  3,
-		"ERROR": 4,
+		"DEBUG"		: 1,
+		"INFO"		: 2,
+		"WARN"		: 3,
+		"SUCCESS"	: 4,
+		"ERROR"		: 5,
 	}
 
 	if _, ok := levelPriority[level]; !ok {
