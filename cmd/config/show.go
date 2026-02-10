@@ -8,18 +8,24 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	showAsJson bool
+)
+
 // showCmd represents the show command
 var showCmd = &cobra.Command{
 	Use:   "show",
 	Short: "Show DB Guard configuration",
 	Long: `Show DB Guard configuration settings.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		config.Show()
+		config.Show(showAsJson)
 		return nil
 	},
 }
 
 func init() {
+	showCmd.Flags().BoolVar(&showAsJson, "show-json", false, "Show configuration as JSON")
+
 	ConfigCmd.AddCommand(showCmd)
 
 	// Here you will define your flags and configuration settings.

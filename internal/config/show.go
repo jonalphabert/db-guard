@@ -1,6 +1,7 @@
 package config
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -38,7 +39,31 @@ func readConfig(configPath string) (models.Config, error) {
 	return config, nil
 }
 
-func Show() {
+func ShowAsJson(configuration models.Config) {
+	configuration.DatabaseConfig.Password = "(secret_key)"
+	jsonConfig, err := json.MarshalIndent(configuration, "", "  ")
+	if err != nil {
+		logger.Error("Error marshaling config to JSON: %v", err)
+		return
+	}
+	fmt.Println(string(jsonConfig))
+}
+
+func showBeautify(configuration models.Config) {
+	showSection("Database Config")
+	showConfig("Database Host", configuration.DatabaseConfig.Host)
+	showConfig("Database Port", configuration.DatabaseConfig.Port)
+	showConfig("Username", configuration.DatabaseConfig.User)
+	showConfig("Username", "(secret_key)")
+	showConfig("Database Name", configuration.DatabaseConfig.DbName)
+	
+	fmt.Println()
+	showSection("Backup Config")
+	showConfig("Backup Path", configuration.BackupConfig.Dir)
+	showConfig("Retention", configuration.BackupConfig.Retention)
+}
+
+func Show(showAsJson bool) {
 	configPath, err := setup.ConfigPath()
 	if err != nil {
 		logger.Error("Error getting config path: %v", err)
@@ -51,17 +76,11 @@ func Show() {
 		return
 	}
 	
-	logger.Info("Config: %v", configuration)
+	if showAsJson {
+		ShowAsJson(configuration)
+		return
+	} 
 
-
-	showSection("Database Config")
-	showConfig("Database Host", configuration.DatabaseConfig.Host)
-	showConfig("Database Port", configuration.DatabaseConfig.Port)
-	showConfig("Username", configuration.DatabaseConfig.User)
-	showConfig("Database Name", configuration.DatabaseConfig.DbName)
-	
-	fmt.Println()
-	showSection("Backup Config")
-	showConfig("Backup Path", configuration.BackupConfig.Dir)
-	showConfig("Retention", configuration.BackupConfig.Retention)
+	showBeautify(configuration)
+	return
 }
