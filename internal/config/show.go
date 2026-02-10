@@ -40,7 +40,6 @@ func readConfig(configPath string) (models.Config, error) {
 }
 
 func ShowAsJson(configuration models.Config) {
-	configuration.DatabaseConfig.Password = "(secret_key)"
 	jsonConfig, err := json.MarshalIndent(configuration, "", "  ")
 	if err != nil {
 		logger.Error("Error marshaling config to JSON: %v", err)
@@ -54,7 +53,7 @@ func showBeautify(configuration models.Config) {
 	showConfig("Database Host", configuration.DatabaseConfig.Host)
 	showConfig("Database Port", configuration.DatabaseConfig.Port)
 	showConfig("Username", configuration.DatabaseConfig.User)
-	showConfig("Username", "(secret_key)")
+	showConfig("Password", configuration.DatabaseConfig.Password)
 	showConfig("Database Name", configuration.DatabaseConfig.DbName)
 	
 	fmt.Println()
@@ -63,7 +62,7 @@ func showBeautify(configuration models.Config) {
 	showConfig("Retention", configuration.BackupConfig.Retention)
 }
 
-func Show(showAsJson bool) {
+func Show(showAsJson bool, showPassword bool) {
 	configPath, err := setup.ConfigPath()
 	if err != nil {
 		logger.Error("Error getting config path: %v", err)
@@ -76,6 +75,10 @@ func Show(showAsJson bool) {
 		return
 	}
 	
+	if !showPassword {
+		configuration.DatabaseConfig.Password = "(secret_key)"
+	}
+		
 	if showAsJson {
 		ShowAsJson(configuration)
 		return

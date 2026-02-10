@@ -10,6 +10,7 @@ import (
 
 var (
 	showAsJson bool
+	showPassword bool
 )
 
 // showCmd represents the show command
@@ -18,13 +19,14 @@ var showCmd = &cobra.Command{
 	Short: "Show DB Guard configuration",
 	Long: `Show DB Guard configuration settings.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		config.Show(showAsJson)
+		config.Show(showAsJson, showPassword)
 		return nil
 	},
 }
 
 func init() {
 	showCmd.Flags().BoolVar(&showAsJson, "show-json", false, "Show configuration as JSON")
+	showCmd.Flags().BoolVar(&showPassword, "show-password", false, "Show password in plain text")
 
 	ConfigCmd.AddCommand(showCmd)
 
