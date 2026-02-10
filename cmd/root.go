@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/jonalphabert/db-guard/cmd/config"
 	"github.com/jonalphabert/db-guard/internal/logger"
 	"github.com/spf13/cobra"
 )
@@ -50,6 +51,8 @@ func init() {
 	// when this action is called directly.
 	cobra.OnInitialize(initLogger)
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	rootCmd.AddCommand(config.ConfigCmd)
 }
 
 func initLogger() {

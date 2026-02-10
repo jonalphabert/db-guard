@@ -1,0 +1,67 @@
+package config
+
+import (
+	"fmt"
+	"os"
+
+	"github.com/fatih/color"
+	"gopkg.in/yaml.v3"
+
+	"github.com/jonalphabert/db-guard/internal/logger"
+	"github.com/jonalphabert/db-guard/internal/models"
+	"github.com/jonalphabert/db-guard/internal/setup"
+)
+
+func showConfig(keyword string, value interface{}) {
+	color.New(color.FgHiBlue).Printf("%s\t\t: ", keyword)
+	color.New(color.FgWhite).Printf("%v\n", value)
+}
+
+func showSection(section string) {
+	color.New(color.FgHiGreen).Printf("%s\n", section)
+	color.New(color.FgHiGreen).Printf("===============================\n")
+}
+
+func readConfig(configPath string) (models.Config, error) {
+	file, err := os.Open(configPath)
+	if err != nil {
+		return models.Config{}, err
+	}
+	defer file.Close()
+
+	var config models.Config
+	decoder := yaml.NewDecoder(file)
+	if err := decoder.Decode(&config); err != nil {
+		return models.Config{}, err
+	}
+
+	return config, nil
+}
+
+func Show() {
+	configPath, err := setup.ConfigPath()
+	if err != nil {
+		logger.Error("Error getting config path: %v", err)
+		return
+	}
+
+	configuration, err := readConfig(configPath)
+	if err != nil {
+		logger.Error("Error reading config file: %v", err)
+		return
+	}
+	
+	logger.Info("Config: %v", configuration)
+
+
+	showSection("Database Config")
+	showConfig("Database Host", configuration.DatabaseConfig.Host)
+	showConfig("Database Port", configuration.DatabaseConfig.Port)
+	showConfig("Username", configuration.DatabaseConfig.User)
+	showConfig("Database Name", configuration.DatabaseConfig.DbName)
+	
+	fmt.Println()
+	showSection("Backup Config")
+	showConfig("Backup Path", configuration.BackupConfig.Dir)
+	showConfig("Retention", configuration.BackupConfig.Retention)
+}
