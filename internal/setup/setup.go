@@ -15,7 +15,7 @@ func Run() error {
 	}
 
 	// ensure base dir exists
-	if err := os.MkdirAll(baseDir, 0755); err != nil {
+	if err = os.MkdirAll(baseDir, 0755); err != nil {
 		logger.Error("Failed to create base dir: %v", err)
 		return err
 	}
@@ -27,7 +27,7 @@ func Run() error {
 	}
 
 	// detect existing config
-	if _, err := os.Stat(configPath); err == nil {
+	if _, err = os.Stat(configPath); err == nil {
 		fmt.Println("✔ Found existing config at", configPath)
 		fmt.Println("⚠ Overwriting existing configuration")
 		logger.Info("Overwriting existing config at %s", configPath)
