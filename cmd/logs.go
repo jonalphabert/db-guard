@@ -12,6 +12,7 @@ import (
 var (
 	logLevel string
 	logTail  int
+	noColor bool
 )
 
 // logsCmd represents the logs command
@@ -19,13 +20,14 @@ var logsCmd = &cobra.Command{
 	Use:   "logs",
 	Short: "Show DB Guard logs",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return logviewer.Show(logLevel, logTail)
+		return logviewer.Show(logLevel, logTail, noColor)
 	},
 }
 
 func init() {
 	logsCmd.Flags().StringVarP(&logLevel, "level", "l", "INFO", "Log level (DEBUG, INFO, WARN, ERROR)")
 	logsCmd.Flags().IntVarP(&logTail, "tail", "t", 100, "Show last N lines")
+	logsCmd.Flags().BoolVarP(&noColor, "no-color", "c", false, "No color output")
 
 	rootCmd.AddCommand(logsCmd)
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func Show(level string, tail int) error {
+func Show(level string, tail int, noColor bool) error {
 	path, err := LogFilePath()
 	if err != nil {
 		return err
@@ -24,7 +24,7 @@ func Show(level string, tail int) error {
 	}
 
 	for _, line := range lines {
-		fmt.Println(line)
+		PrintLine(line, noColor)
 	}
 
 	return nil
