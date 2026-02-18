@@ -3,10 +3,8 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 
 	"github.com/fatih/color"
-	"gopkg.in/yaml.v3"
 
 	"github.com/jonalphabert/db-guard/internal/logger"
 	"github.com/jonalphabert/db-guard/internal/models"
@@ -21,22 +19,6 @@ func showConfig(keyword string, value interface{}) {
 func showSection(section string) {
 	color.New(color.FgHiGreen).Printf("%s\n", section)
 	color.New(color.FgHiGreen).Printf("===============================\n")
-}
-
-func readConfig(configPath string) (models.Config, error) {
-	file, err := os.Open(configPath)
-	if err != nil {
-		return models.Config{}, err
-	}
-	defer file.Close()
-
-	var config models.Config
-	decoder := yaml.NewDecoder(file)
-	if err := decoder.Decode(&config); err != nil {
-		return models.Config{}, err
-	}
-
-	return config, nil
 }
 
 func ShowAsJson(configuration models.Config) {
